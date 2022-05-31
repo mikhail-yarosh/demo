@@ -1,0 +1,6 @@
+---
+- import_tasks: build_setup.yml
+- import_tasks: build_peervpn.yml
+- import_tasks: repo_setup.yml
+- import_tasks: push_peervpn.yml
+- import_tasks: install_peervpn.yml

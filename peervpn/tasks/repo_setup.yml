@@ -1,0 +1,27 @@
+---
+- name: Install packages
+  apt:
+    name: "{{ repo_pkgs }}"
+    state: latest
+
+- name: Remove default nginx config
+  file:
+    path: /etc/nginx/sites-enabled/default
+    state: absent
+
+- name: Add nginx configs
+  template:
+    src: nginx_repo.j2
+    dest: /etc/nginx/conf.d/repo.conf
+  notify:
+    - restart_nginx
+
+- name: Prepare dir for repo
+  file:
+    path: "{{ repo_main_path }}"
+    state: directory
+
+- name: Prepare dir for amd64 bins
+  file:
+    path: "{{ package_amd64_path }}"
+    state: directory

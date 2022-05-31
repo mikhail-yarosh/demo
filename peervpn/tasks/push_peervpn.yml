@@ -1,0 +1,25 @@
+---
+- name: Copy .deb into repo path
+  shell:
+    cmd: cp /app/peervpn_{{ peervpn_version }}_amd64.deb "{{ repo_main_path }}"
+
+- name: Generate repo meta and packages list
+  shell:
+    cmd: dpkg-scanpackages --arch amd64 pool/ > dists/stable/main/binary-amd64/Packages
+    chdir: "{{ repo_path }}"
+
+- name: Generate compressed list of packages
+  shell:
+    cmd: cat dists/stable/main/binary-amd64/Packages | gzip -9 > dists/stable/main/binary-amd64/Packages.gz
+    chdir: "{{ repo_path }}"
+
+- name: Copy release script
+  template:
+    src: release.sh.j2
+    dest: /usr/local/bin/release
+    mode: 755
+
+- name: Generate Release file
+  shell:
+    cmd: release > Release
+    chdir: "{{ repo_path }}/dists/stable"

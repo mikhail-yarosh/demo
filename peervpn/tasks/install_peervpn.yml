@@ -1,0 +1,21 @@
+---
+- name: Add specified repository into sources list
+  apt_repository:
+    repo: deb [trusted=yes] http://127.0.0.1/ stable main
+    state: present
+  tags:
+    - install_peervpn
+
+- name: Update and upgrade
+  apt:
+    upgrade: yes
+    update_cache: yes
+  tags:
+    - install_peervpn
+
+- name: Install PeerVPN
+  apt:
+    name: peervpn
+    state: latest
+  tags:
+    - install_peervpn

@@ -1,0 +1,4 @@
+- hosts: "{{ target }}"
+  tasks:
+    - name: Only install peervpn 
+      import_tasks: peervpn/tasks/install_peervpn.yml

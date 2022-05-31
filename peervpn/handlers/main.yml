@@ -1,0 +1,11 @@
+---
+- name: restart_nginx
+  shell:
+    cmd: nginx -t
+  notify:
+    - restart nginx
+
+- name: restart nginx
+  service:
+    name: nginx
+    state: restarted

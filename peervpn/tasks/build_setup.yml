@@ -1,0 +1,11 @@
+---
+- name: Upgrade OS
+  apt:
+    upgrade: yes
+    update_cache: no
+
+- name: Install packages
+  apt:
+    name: "{{ build_pkgs }}"
+    state: latest
+    update_cache: yes
