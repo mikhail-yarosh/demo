@@ -17,6 +17,8 @@
   template:
     src: release.sh.j2
     dest: /usr/local/bin/release
+    owner: root
+    group: root
     mode: 755
 
 - name: Generate Release file

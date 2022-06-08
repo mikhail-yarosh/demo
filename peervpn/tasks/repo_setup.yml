@@ -13,6 +13,9 @@
   template:
     src: nginx_repo.j2
     dest: /etc/nginx/conf.d/repo.conf
+    owner: root
+    group: root
+    mode: 744
   notify:
     - restart_nginx
 
@@ -20,8 +23,14 @@
   file:
     path: "{{ repo_main_path }}"
     state: directory
+    owner: www-data
+    group: www-data
+    mode: 755
 
 - name: Prepare dir for amd64 bins
   file:
     path: "{{ package_amd64_path }}"
     state: directory
+    owner: www-data
+    group: www-data
+    mode: 755

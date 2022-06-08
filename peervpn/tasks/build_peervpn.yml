@@ -5,24 +5,36 @@
     dest: /app/peervpn
 
 - name: Build peervpn
-  shell:
-    cmd: make
+  make:
     chdir: /app/peervpn/
-
-- name: Prepare package
-  shell:
-    cmd: mkdir -p peervpn_{{ peervpn_version }}_amd64/usr/local/bin/ && cp /app/peervpn/peervpn peervpn_{{ peervpn_version }}_amd64/usr/local/bin/ && mkdir -p peervpn_{{ peervpn_version }}_amd64/DEBIAN
-    chdir: /app/
 
 - name: Create dir for dpkg builder files
   file:
-    path: "/app/peervpn_{{ peervpn_version }}_amd64/DEBIAN/"
+    path: "{{ item }}"
     state: directory
+    mode: 0775
+    owner: root
+    group: root
+  with_items:
+    - "/app/peervpn_{{ peervpn_version }}_amd64/DEBIAN/"
+    - "/app/peervpn_{{ peervpn_version }}_amd64/usr/local/bin/"
+
+- name: Prepare package
+  copy:
+    src: "/app/peervpn/peervpn"
+    dest: "/app/peervpn_{{ peervpn_version }}_amd64/usr/local/bin/"
+    remote_src: yes
+    mode: 755
+    owner: root
+    group: root
 
 - name: Render DEBIAN/control
   template:
     src: control.j2
     dest: /app/peervpn_{{ peervpn_version }}_amd64/DEBIAN/control
+    mode: 744
+    owner: root
+    group: root
 
 - name: Pack peervpn into .deb
   shell:
